@@ -1,17 +1,17 @@
-import galleryItems from './gallery-items.js';
+import galleryItems from './gallery-item.js';
 
-const galleryContainerRef = document.querySelector('.js-gallery');
-const modalWrapperRef = document.querySelector('.js-lightbox');
-const modalImgRef = document.querySelector('.lightbox__image');
-const modalCloseBtnRef = document.querySelector(
+const galleryBoxRef = document.querySelector('.js-gallery');
+const modalWrapRef = document.querySelector('.js-lightbox');
+const modalImageRef = document.querySelector('.lightbox__image');
+const modalCloseButtonRef = document.querySelector(
   '[data-action="close-lightbox"]',
 );
 const modalOverlayRef = document.querySelector('.lightbox__overlay');
 
-const galleryMarkup = creategalleryMarkup(galleryItems);
-galleryContainerRef.insertAdjacentHTML('beforeend', galleryMarkup);
+const gallertMarkupCreate = creategallertMarkupCreate(galleryItems);
+galleryBoxRef.insertAdjacentHTML('beforeend', gallertMarkupCreate);
 
-function creategalleryMarkup(items) {
+function creategallertMarkupCreate(items) {
   return items
     .map(({ preview, original, description }, index) => {
       return `
@@ -33,7 +33,7 @@ function creategalleryMarkup(items) {
     .join('');
 }
 
-galleryContainerRef.addEventListener('click', onGalleryItemOpen);
+galleryBoxRef.addEventListener('click', onGalleryItemOpen);
 
 function onGalleryItemOpen(event) {
     event.preventDefault();
@@ -45,34 +45,34 @@ function onGalleryItemOpen(event) {
 
 function onOpenModal(event) {
   window.addEventListener('keydown', onEscCloseModal);
-  galleryContainerRef.addEventListener('keydown', onClickImageSlide);
+  galleryBoxRef.addEventListener('keydown', onClickImageSlide);
 
-  modalWrapperRef.classList.add('is-open');
+  modalWrapRef.classList.add('is-open');
   setImageAttribute(event);
 }
 
 function setImageAttribute(event) {
-  modalImgRef.src = event.target.dataset.source;
-  modalImgRef.alt = event.target.alt;
-  modalImgRef.setAttribute('data-index', event.target.dataset.index);
+  modalImageRef.src = event.target.dataset.source;
+  modalImageRef.alt = event.target.alt;
+  modalImageRef.setAttribute('data-index', event.target.dataset.index);
 }
 
-modalWrapperRef.addEventListener('click', onOverlayClick);
+modalWrapRef.addEventListener('click', onOverlayClick);
 
 function onCloseModal() {
   window.removeEventListener('keydown', onEscCloseModal);
-  galleryContainerRef.removeEventListener('keydown', onClickImageSlide);
-  modalWrapperRef.classList.remove('is-open');
+  galleryBoxRef.removeEventListener('keydown', onClickImageSlide);
+  modalWrapRef.classList.remove('is-open');
   unsetImageAttributes();
 }
 
 function unsetImageAttributes() {
-  modalImgRef.src = '';
-  modalImgRef.alt = '';
+  modalImageRef.src = '';
+  modalImageRef.alt = '';
 }
 
 function onOverlayClick(event) {
-  if (event.target === modalOverlayRef || event.target === modalCloseBtnRef) {
+  if (event.target === modalOverlayRef || event.target === modalCloseButtonRef) {
     onCloseModal();
   }
 }
@@ -86,7 +86,7 @@ function onEscCloseModal(event) {
 function onClickImageSlide(event) {
   const {
     dataset: { index },
-  } = modalImgRef;
+  } = modalImageRef;
   const parsedIndex = parseInt(index);
   const firstChild = 0;
   const lastChild = galleryItems.length - 1;
@@ -104,7 +104,8 @@ function onClickImageSlide(event) {
 
 function setNewAttributes(newIndex) {
   const { original, description } = galleryItems[newIndex];
-  modalImgRef.src = original;
-  modalImgRef.alt = description;
-  modalImgRef.dataset.index = newIndex;
+  modalImageRef.src = original;
+  modalImageRef.alt = description;
+  modalImageRef.dataset.index = newIndex;
 }
+
